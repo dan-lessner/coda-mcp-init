@@ -247,7 +247,17 @@ If the user pastes a Coda URL or asks to work with a Coda document:
   lookups, buttons, and doc-specific data.
 - For very large documents (50+ tables), crawl only the pages the user
   identifies as important, or do it in batches.
+- **Views and charts**: `table_view_manage` supports creating and configuring
+  views including charts (bar, line, area, pie, scatter, bubble). When indexing,
+  note any named views or charts in the Tables section so future sessions can
+  reference or update them without re-discovery.
+- **`page_read` returns comments**: as of June 2026, `page_read` also returns
+  comment threads on the page — relevant if the user asks about doc discussions.
+- **Resolving comments**: use `comment_resolve` to resolve or reopen comment
+  threads (distinct from `comment_delete`).
 
 ## Reference
 
 - **Coda API/MCP docs**: https://coda.io/developers
+- **Tools and endpoints**: https://coda.io/@bharat-batra/tools-and-endpoints
+- **MCP improvements (June 2026)**: charts, comment_resolve, view layouts, page protection
