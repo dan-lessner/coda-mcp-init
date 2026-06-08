@@ -1,8 +1,8 @@
 ---
-name: coda-init
+name: coda-mcp-init
 description: >
   Indexes a Coda document for efficient MCP interaction. Activate whenever the user
-  says /coda-init, asks to "index a Coda doc", "map my Coda document", "scan the Coda
+  says /coda-mcp-init, asks to "index a Coda doc", "map my Coda document", "scan the Coda
   structure", or when Claude first connects to a Coda document via MCP and needs to
   understand its structure. Also activate when Claude is about to work with a Coda doc
   and wants to avoid repeated schema-discovery calls — reading one index page is cheaper
@@ -23,16 +23,16 @@ repositories. On future visits, one `page_read` call gives Claude everything it 
 ## Commands
 
 ```
-/coda-init <doc_url_or_uri>   Full crawl → create/update CLAUDE.md page
-/coda-init check              Quick diff: compare document_read against stored index
-/coda-init read               Just read the existing CLAUDE.md page
+/coda-mcp-init <doc_url_or_uri>   Full crawl → create/update CLAUDE.md page
+/coda-mcp-init check              Quick diff: compare document_read against stored index
+/coda-mcp-init read               Just read the existing CLAUDE.md page
 ```
 
 If no command is given but the skill triggers (e.g. user pastes a Coda URL and asks
-to work with it), do `/coda-init read` first. If the page doesn't exist, do
-`/coda-init`.
+to work with it), do `/coda-mcp-init read` first. If the page doesn't exist, do
+`/coda-mcp-init`.
 
-## Workflow: Full Index (`/coda-init`)
+## Workflow: Full Index (`/coda-mcp-init`)
 
 ### Step 1: Resolve the document
 
@@ -177,24 +177,24 @@ Behavior:
 5. If the user can't or won't unlock: output the index content as a code
    block in the conversation so they can paste it manually.
 
-## Workflow: Quick Check (`/coda-init check`)
+## Workflow: Quick Check (`/coda-mcp-init check`)
 
 1. `document_read` on the doc (page list only).
 2. `page_read` on the `CLAUDE.md` page — extract the page/table lists.
 3. Compare: any new/removed pages? If yes, suggest re-index.
 4. If unchanged, report "Index is current."
 
-## Workflow: Read (`/coda-init read`)
+## Workflow: Read (`/coda-mcp-init read`)
 
 1. Find `CLAUDE.md` in the page list (via `document_read`).
 2. `page_read` with `contentTypesToInclude: ["markdown"]`.
 3. Use the content as context for the rest of the conversation.
-4. If not found, tell the user and suggest `/coda-init`.
+4. If not found, tell the user and suggest `/coda-mcp-init`.
 
 ## When to auto-trigger
 
 If the user pastes a Coda URL or asks to work with a Coda document:
-1. Try `/coda-init read` first (2 calls).
+1. Try `/coda-mcp-init read` first (2 calls).
 2. If `CLAUDE.md` doesn't exist, ask: "This doc doesn't have a CLAUDE.md yet.
    Want me to create one? It'll cost ~15 API calls but saves time on every
    future interaction."
@@ -232,7 +232,7 @@ If the user pastes a Coda URL or asks to work with a Coda document:
 - Column IDs and table IDs are stable in Coda — they survive renames.
   The index remains valid after cosmetic changes.
 - Structural changes (adding/removing tables or columns) invalidate the index.
-  Use `/coda-init check` to detect this.
+  Use `/coda-mcp-init check` to detect this.
 - The index stores only schema, not row data. It's not a backup.
 - **Synced tables**: detect by table URI pattern `grid-sync-*` (the number
   after `sync-` is the pack ID, e.g. 1054 = Coda Doc Sync).

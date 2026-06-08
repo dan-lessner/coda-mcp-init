@@ -1,4 +1,4 @@
-# coda-init
+# coda-mcp-init
 
 A Claude skill that indexes Coda documents for efficient MCP interaction.
 
@@ -24,9 +24,9 @@ the entire document.
 ## Commands
 
 ```
-/coda-init <doc_url_or_name>   Full crawl → create/update CLAUDE.md
-/coda-init check               Quick diff against stored index
-/coda-init read                Read existing CLAUDE.md
+/coda-mcp-init <doc_url_or_name>   Full crawl → create/update CLAUDE.md
+/coda-mcp-init check               Quick diff against stored index
+/coda-mcp-init read                Read existing CLAUDE.md
 ```
 
 ## Installation
@@ -37,10 +37,10 @@ Upload `SKILL.md` as a skill in your Claude account or project.
 
 ### Claude Code
 
-Copy the `coda-init` folder to your skills directory:
+Copy `SKILL.md` to your skills directory:
 
 ```bash
-cp -r coda-init /path/to/your/skills/user/
+cp SKILL.md /path/to/your/skills/user/coda-mcp-init/
 ```
 
 ## Requirements
